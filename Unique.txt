@@ -1,0 +1,39 @@
+Setting environment for using XAMPP for Windows.
+PayilagamServer@PAYILAGAM c:\xampp
+# mysql
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 4
+Server version: 10.1.32-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> use test;
+Database changed
+MariaDB [test]> create table ex4(name varchar(30), mobile varchar(30) unique);
+Query OK, 0 rows affected (0.55 sec)
+
+MariaDB [test]> insert into ex4 values("Guhan", 979181);
+Query OK, 1 row affected (0.08 sec)
+
+MariaDB [test]> select * from ex4;
++-------+--------+
+| name  | mobile |
++-------+--------+
+| Guhan | 979181 |
++-------+--------+
+1 row in set (0.00 sec)
+
+MariaDB [test]> insert into ex4 values("Anbu", 979181);
+ERROR 1062 (23000): Duplicate entry '979181' for key 'mobile'
+MariaDB [test]> desc ex4;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| name   | varchar(30) | YES  |     | NULL    |       |
+| mobile | varchar(30) | YES  | UNI | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+2 rows in set (0.02 sec)
+
+MariaDB [test]>

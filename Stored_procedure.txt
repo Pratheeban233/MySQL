@@ -1,0 +1,33 @@
+Stored Procedure:
+
+Creat table(details):
+
+Name 		Father 		Mobile 	
+Guhan 		Ganesan 	979181
+Anbu 		Ganesan 	888698
+Kathir 		Anbu 		7786
+
+Query:
+
+CREATE PROCEDURE tr() BEGIN select name, Father from details; END 
+
+
+Execute:
+
+call tr()
+
+Result:
+
+name 		Father 	
+Guhan 		Ganesan
+Anbu 		Ganesan
+Kathir 		Anbu
+
+
+
+
+
+
+
+
+

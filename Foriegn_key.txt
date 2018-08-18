@@ -1,0 +1,102 @@
+MariaDB [(none)]> use test;
+
+
+MariaDB [test]> create table emp( name varchar(30), acc varchar(30), primary key(acc));
+Query OK, 0 rows affected (0.25 sec)
+
+MariaDB [test]> desc emp;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| name  | varchar(30) | YES  |     | NULL    |       |
+| acc   | varchar(30) | NO   | PRI | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.02 sec)
+
+MariaDB [test]> insert into emp values("Guhan", 12345);
+Query OK, 1 row affected (0.08 sec)
+
+MariaDB [test]> insert into emp values("Anbu", 12345);
+ERROR 1062 (23000): Duplicate entry '12345' for key 'PRIMARY'
+MariaDB [test]> insert into emp values("Anbu", 12346);
+Query OK, 1 row affected (0.09 sec)
+
+MariaDB [test]> select * from emp;
++-------+-------+
+| name  | acc   |
++-------+-------+
+| Guhan | 12345 |
+| Anbu  | 12346 |
++-------+-------+
+2 rows in set (0.00 sec)
+
+MariaDB [test]> create table salary( name varchar(30), jan varchar(30), primary key(jan), foreign key(acc) references emp(acc));
+ERROR 1072 (42000): Key column 'acc' doesn't exist in table
+
+
+MariaDB [test]> create table salary( name varchar(30), acc varchar(30), sal1 varchar(30), primary key(acc), foreign key(acc) references emp(acc));
+Query OK, 0 rows affected (0.51 sec)
+
+MariaDB [test]> insert into salary values("Guhan", 12345, 12000);
+Query OK, 1 row affected (0.09 sec)
+
+MariaDB [test]> desc salary;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| name  | varchar(30) | YES  |     | NULL    |       |
+| acc   | varchar(30) | NO   | PRI | NULL    |       |
+| sal1  | varchar(30) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.02 sec)
+
+
+MariaDB [test]> insert into salary values("Guhan", 12345, 20000);
+ERROR 1062 (23000): Duplicate entry '12345' for key 'PRIMARY'
+MariaDB [test]> insert into salary values("Rajesh", 12350, 20000);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`test`.`salary`, CONSTRAINT `salary_ibfk_1` FOREIGN KEY (`acc`) REFERENCES `emp` (`acc`))
+MariaDB [test]> select * from salary;
++-------+-------+-------+
+| name  | acc   | sal1  |
++-------+-------+-------+
+| Guhan | 12345 | 12000 |
++-------+-------+-------+
+1 row in set (0.00 sec)
+
+MariaDB [test]> update salary set sal1=2000 where acc=12345;
+Query OK, 1 row affected (0.10 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [test]> select * from salary;
++-------+-------+------+
+| name  | acc   | sal1 |
++-------+-------+------+
+| Guhan | 12345 | 2000 |
++-------+-------+------+
+1 row in set (0.00 sec)
+
+MariaDB [test]> update salary set sal1=13000 where name="Guhan";
+Query OK, 1 row affected (0.06 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [test]> select * from salary;
++-------+-------+-------+
+| name  | acc   | sal1  |
++-------+-------+-------+
+| Guhan | 12345 | 13000 |
++-------+-------+-------+
+1 row in set (0.00 sec)
+
+MariaDB [test]> insert into salary values("Anbu",12346, 34000);
+Query OK, 1 row affected (0.07 sec)
+
+MariaDB [test]> select * from salary;
++-------+-------+-------+
+| name  | acc   | sal1  |
++-------+-------+-------+
+| Guhan | 12345 | 13000 |
+| Anbu  | 12346 | 34000 |
++-------+-------+-------+
+2 rows in set (0.00 sec)
+
+MariaDB [test]>
